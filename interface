@@ -1,0 +1,194 @@
+from tkinter import *
+from PIL import Image, ImageTk
+
+root1 = Tk()
+root1.title("Messenger")
+root1.geometry(str(root1.winfo_screenwidth()-100)+'x'+str(root1.winfo_screenheight()-100)+'+0+0')
+w=root1.winfo_screenwidth()-100
+h=root1.winfo_screenheight()-100
+mainmenu = Menu(root1)
+load = Image.open("bgd.jpg")
+render = ImageTk.PhotoImage(load)
+img = Label(image=render)
+img.image = render
+text = open('text.txt', 'r')
+
+
+#текст сообщения
+mess = ""
+log = ""
+pas = ""
+
+
+#виджеты
+Send = Button(text="Send", width=int(root1.winfo_screenwidth()/100), height=0)
+Mess = Text(width=100, height=1, bg="white", fg='black', wrap=WORD)
+Mess.insert(1.0, text.read())
+text.close()
+text = open('text.txt', 'a')
+Mss = Text(width=100, height=30, bg="White", fg='black', wrap=WORD)
+
+
+
+
+
+#авторизация
+def enter1():
+    global log,pas,login, password
+    log = login.get(1.0, END)
+    pas = password.get(1.0, END)
+    password.delete(1.0, END)
+    login.delete(1.0, END)
+
+def enter2(event):
+    global log,pas,login, password
+    log = login.get(1.0, END)
+    pas = password.get(1.0, END)
+    password.delete(1.0, END)
+    login.delete(1.0, END)
+
+#кнопки меню
+def signin1():
+    global login, password
+    root2 = Toplevel()
+    root2.title("Sign in")
+    root2.geometry(str(int(root1.winfo_screenwidth()/3) - 100) + 'x' + str(int(root1.winfo_screenheight()/3) - 100) + '+'+str(int(root1.winfo_screenwidth()/3))+'+'+str(int(root1.winfo_screenheight()/3)))
+    login = Text(root2,width=30, height=1, bg="white", fg='black', wrap=WORD)
+    login.place(relx=0.2, rely=0.15)
+    Label(root2,text='login').place(relx=0.2,rely=0)
+    password = Text(root2,width=30, height=1, bg="white", fg='black', wrap=WORD)
+    Label(root2,text='password').place(relx=0.2, rely=0.25)
+    password.place(relx=0.2, rely=0.4)
+    enter = Button(root2,text="Enter", width=int(root2.winfo_screenwidth()/100), height=0,command = enter1)
+    enter.place(relx=0.35, rely=0.65)
+    root2.bind('<Return>',enter2)
+    root2.mainloop()
+
+def signin2(event):
+    global login, password
+    root2 = Toplevel()
+    root2.title("Sign in")
+    root2.geometry(str(int(root1.winfo_screenwidth()/3) - 100) + 'x' + str(int(root1.winfo_screenheight()/3) - 100) + '+'+str(int(root1.winfo_screenwidth()/3))+'+'+str(int(root1.winfo_screenheight()/3)))
+    login = Text(root2,width=30, height=1, bg="white", fg='black', wrap=WORD)
+    login.place(relx=0.2, rely=0.15)
+    Label(root2,text='login').place(relx=0.2,rely=0)
+    password = Text(root2,width=30, height=1, bg="white", fg='black', wrap=WORD)
+    Label(root2,text='password').place(relx=0.2, rely=0.25)
+    password.place(relx=0.2, rely=0.4)
+    enter = Button(root2,text="Enter", width=int(root2.winfo_screenwidth()/100), height=0,command = enter1)
+    enter.place(relx=0.35, rely=0.65)
+    root2.bind('<Return>',enter2)
+    root2.mainloop()
+
+def signout1():
+    global login, password
+    #выход
+    pass
+
+def savetext1():
+    global text
+    text.write(Mess.get(1.0, END)+'\n')
+
+def savetext2(event):
+    global text
+    text.write(Mess.get(1.0, END)+'\n')
+
+def deletetext1():
+    global text
+    text.close()
+    Mess.delete(1.0, END)
+    text = open('text.txt','w')
+
+def deletetext2(event):
+    global text
+    text.close()
+    Mess.delete(1.0, END)
+    text = open('text.txt','w')
+
+def yes1():
+    global root3
+    root3.destroy()
+    root1.destroy()
+
+def no1():
+    global root3
+    root3.destroy()
+
+def yes2(event):
+    global root3
+    root3.destroy()
+    root1.destroy()
+
+def no2(event):
+    global root3
+    root3.destroy()
+
+
+def ex1(event):
+    global root3
+    root3 = Toplevel()
+    root3.title('Exit')
+    root3.geometry(str(int(root1.winfo_screenwidth() / 3) - 100) + 'x' + str(int(root1.winfo_screenheight() / 3) - 100) + '+' + str(int(root1.winfo_screenwidth() / 3)) + '+' + str(int(root1.winfo_screenheight() / 3)))
+    Label(root3, text='Are you sure').place(relx=0.3, rely=0.3)
+    Label(root3, text='you want to exit').place(relx=0.3, rely=0.4)
+    Button(root3, text='yes', command=yes1).place(relx=0.2, rely=0.7)
+    Button(root3, text='no', command=no1).place(relx=0.8, rely=0.7)
+    root3.bind('<Escape>', no2)
+    root3.bind('<Return>', yes2)
+    root3.mainloop()
+
+def ex2():
+    global root3
+    root3 = Toplevel()
+    root3.title('Exit')
+    root3.geometry(str(int(root1.winfo_screenwidth()/3) - 100) + 'x' + str(int(root1.winfo_screenheight()/3) - 100) + '+'+str(int(root1.winfo_screenwidth()/3))+'+'+str(int(root1.winfo_screenheight()/3)))
+    Label(root3,text='Are you sure').place(relx=0.3,rely=0.3)
+    Label(root3,text='you want to exit').place(relx=0.3,rely=0.4)
+    Button(root3,text='yes',command = yes1).place(relx=0.2,rely=0.7)
+    Button(root3, text='no',command = no1).place(relx=0.8,rely=0.7)
+    root3.bind('<Escape>', no2)
+    root3.bind('<Return>', yes2)
+    root3.mainloop()
+
+
+
+
+#меню
+filemenu = Menu(mainmenu, tearoff=0)
+filemenu.add_command(label="Sign in F1",command = signin1)
+filemenu.add_command(label="Sign out F2" ''',command = signout''')
+filemenu.add_command(label="Save text F3",command = savetext1)
+filemenu.add_command(label="Delete text F4",command = deletetext1)
+filemenu.add_command(label="Exit", command = ex2)
+
+mainmenu.add_cascade(label="Menu", menu=filemenu)
+root1.config(menu=mainmenu)
+
+#отправка сообщения
+def send1():
+    global mess
+    mess = Mess.get(1.0,END)
+    Mess.delete(1.0,END)
+
+def send2(event):
+    global mess
+    mess = Mess.get(1.0, END)
+    Mess.delete(1.0, END)
+
+
+Send.config(command=send1)
+root1.bind('<Return>',send2)
+root1.bind('<Escape>',ex1)
+root1.bind('<F1>',signin2)
+#root2.bind('<F2>',signout2)
+root1.bind('<F3>',savetext2)
+root1.bind('<F4>',deletetext2)
+
+
+
+Mss.place(relx=0.9,rely=0.965,anchor='se')
+Send.place(relx=1, rely=1,anchor='se')
+Mess.place(relx=0.9,rely=0.995,anchor='se')
+img.place(x=-10, y=-10)
+root1.mainloop()
+text.close()
