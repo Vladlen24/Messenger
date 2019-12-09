@@ -84,7 +84,8 @@ def signin2(event):
     login.place(relx=0.2, rely=0.15)
     Label(root2,text='login').place(relx=0.2,rely=0)
     password = Text(root2,width=30, height=1, bg="white", fg='black', wrap=WORD)
-    Label(root2,text='password').place(relx=0.2, rely=0.25)
+    Label(root2, text='password').place(relx=0.2, rely=0.25)
+    password.place(relx=0.2, rely=0.4)
     enter = But(root2,"Enter", int(root2.winfo_screenwidth()/100), 0,enter1,0.35,0.65,'nw')
     root2.bind('<Return>',enter2)
     root2.mainloop()
@@ -198,4 +199,5 @@ Mess.place(relx=0.9,rely=0.995,anchor='se')
 img.place(x=-10, y=-10)
 root1.mainloop()
 text.close()
+
 
