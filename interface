@@ -14,6 +14,18 @@ img.image = render
 text = open('text.txt', 'r')
 
 
+
+class But:
+    def __init__(self, root, text, width, height, command, relx, rely,anchor):
+        self.root=root
+        self.text=text
+        self.command=command
+        self.relx=relx
+        self.rely=rely
+        self.width=width
+        self.height=height
+        Button(root, text=text, command=command, width=width, height=height).place(relx=relx, rely=rely,anchor=anchor)
+
 #текст сообщения
 mess = ""
 log = ""
@@ -21,7 +33,7 @@ pas = ""
 
 
 #виджеты
-Send = Button(text="Send", width=int(root1.winfo_screenwidth()/100), height=0)
+
 Mess = Text(width=100, height=1, bg="white", fg='black', wrap=WORD)
 Mess.insert(1.0, text.read())
 text.close()
@@ -59,8 +71,7 @@ def signin1():
     password = Text(root2,width=30, height=1, bg="white", fg='black', wrap=WORD)
     Label(root2,text='password').place(relx=0.2, rely=0.25)
     password.place(relx=0.2, rely=0.4)
-    enter = Button(root2,text="Enter", width=int(root2.winfo_screenwidth()/100), height=0,command = enter1)
-    enter.place(relx=0.35, rely=0.65)
+    enter = But(root2,"Enter", int(root2.winfo_screenwidth()/100), 0,enter1,0.35,0.65,'nw')
     root2.bind('<Return>',enter2)
     root2.mainloop()
 
@@ -74,9 +85,7 @@ def signin2(event):
     Label(root2,text='login').place(relx=0.2,rely=0)
     password = Text(root2,width=30, height=1, bg="white", fg='black', wrap=WORD)
     Label(root2,text='password').place(relx=0.2, rely=0.25)
-    password.place(relx=0.2, rely=0.4)
-    enter = Button(root2,text="Enter", width=int(root2.winfo_screenwidth()/100), height=0,command = enter1)
-    enter.place(relx=0.35, rely=0.65)
+    enter = But(root2,"Enter", int(root2.winfo_screenwidth()/100), 0,enter1,0.35,0.65,'nw')
     root2.bind('<Return>',enter2)
     root2.mainloop()
 
@@ -176,19 +185,17 @@ def send2(event):
     Mess.delete(1.0, END)
 
 
-Send.config(command=send1)
 root1.bind('<Return>',send2)
 root1.bind('<Escape>',ex1)
 root1.bind('<F1>',signin2)
 #root2.bind('<F2>',signout2)
 root1.bind('<F3>',savetext2)
 root1.bind('<F4>',deletetext2)
-
-
+Send = But(root1,'send',int(root1.winfo_screenwidth()/100),0,send1,1,1,'se')
 
 Mss.place(relx=0.9,rely=0.965,anchor='se')
-Send.place(relx=1, rely=1,anchor='se')
 Mess.place(relx=0.9,rely=0.995,anchor='se')
 img.place(x=-10, y=-10)
 root1.mainloop()
 text.close()
+
