@@ -1,5 +1,6 @@
 from tkinter import *
 from PIL import Image, ImageTk
+import time
 
 root1 = Tk()
 root1.title("Messenger")
@@ -160,8 +161,16 @@ def ex2():
     root3.bind('<Return>', yes2)
     root3.mainloop()
 
+def lis1():
+    Mss.insert(INSERT, "#list of users")
 
 
+def time1():
+    Mss.insert(INSERT, '\n' + "Current Time = " + time.strftime("%H:%M:%S", time.localtime()))
+
+
+def time2(event):
+    Mss.insert(INSERT, '\n' + "Current Time = " + time.strftime("%H:%M:%S", time.localtime()))
 
 #меню
 filemenu = Menu(mainmenu, tearoff=0)
@@ -169,7 +178,10 @@ filemenu.add_command(label="Sign in F1",command = signin1)
 filemenu.add_command(label="Sign out F2" ''',command = signout''')
 filemenu.add_command(label="Save text F3",command = savetext1)
 filemenu.add_command(label="Delete text F4",command = deletetext1)
+filemenu.add_command(label="List F5", command = lis1)
+filemenu.add_command(label="Time F6", command = time1)
 filemenu.add_command(label="Exit", command = ex2)
+
 
 mainmenu.add_cascade(label="Menu", menu=filemenu)
 root1.config(menu=mainmenu)
@@ -192,6 +204,9 @@ root1.bind('<F1>',signin2)
 #root2.bind('<F2>',signout2)
 root1.bind('<F3>',savetext2)
 root1.bind('<F4>',deletetext2)
+#root1.bind('F5',lis2)
+root1.bind('<F6>',time2)
+
 Send = But(root1,'send',int(root1.winfo_screenwidth()/100),0,send1,1,1,'se')
 
 Mss.place(relx=0.9,rely=0.965,anchor='se')
