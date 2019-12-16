@@ -27,6 +27,57 @@ class But:
         self.height=height
         Button(root, text=text, command=command, width=width, height=height).place(relx=relx, rely=rely,anchor=anchor)
 
+class Warn:
+    '''class to warning window'''
+    def __init__(self,title,text,type):
+        self.text=text
+        self.title=title
+        self.type=type
+
+    def create(self):
+        self.root=Toplevel()
+        self.root.title(self.title)
+        self.root.geometry(str(int(root1.winfo_screenwidth() / 3) - 100) + 'x' + str(
+            int(root1.winfo_screenheight() / 3) - 100) + '+' + str(int(root1.winfo_screenwidth() / 3)) + '+' + str(
+            int(root1.winfo_screenheight() / 3)))
+        Label(self.root, text='Are you sure').place(relx=0.3, rely=0.3)
+        Label(self.root, text=self.text).place(relx=0.3, rely=0.4)
+        if self.type=='exit':
+            Button(self.root, text='yes', command=root1.destroy).place(relx=0.2, rely=0.7)
+            Button(self.root, text='no', command=self.root.destroy).place(relx=0.8, rely=0.7)
+        else:
+            Button(self.root, text='yes', command=self.yes).place(relx=0.2, rely=0.7)
+            Button(self.root, text='no', command=self.root.destroy).place(relx=0.8, rely=0.7)
+        self.root.bind('<Escape>', self.close())
+        self.root.bind('<Return>', self.closeall())
+        self.root.mainloop()
+
+    def yes(self):
+        Mss.delete(1.0, END)
+        self.root.destroy()
+        
+    def close(self):
+        def f(event):
+            global Mss
+            if self.type == 'exit':
+                self.root.destroy()
+
+            else:
+                self.root.destroy()
+                Mss.delete(1.0, END)
+        return f
+
+    def closeall(self):
+        def f(event):
+            global Mss
+            if self.type == 'exit':
+                self.root.destroy()
+                root1.destroy()
+            else:
+                self.root.destroy()
+
+        return f
+
 #текст сообщения
 mess = ""
 log = ""
@@ -34,7 +85,8 @@ pas = ""
 
 
 #виджеты
-
+Ex=Warn('Exit','you want to exit?','exit')
+Dl=Warn('Delete','you want to delete text?','warn')
 Mess = Text(width=100, height=1, bg="white", fg='black', wrap=WORD)
 Mess.insert(1.0, text.read())
 text.close()
@@ -116,61 +168,22 @@ def deletetext2(event):
     Mess.delete(1.0, END)
     text = open('text.txt','w')
 
-def yes1():
-    global root3
-    root3.destroy()
-    root1.destroy()
-
-def no1():
-    global root3
-    root3.destroy()
-
-def yes2(event):
-    global root3
-    root3.destroy()
-    root1.destroy()
-
-def no2(event):
-    global root3
-    root3.destroy()
-
-
 def ex1(event):
-    global root3
-    root3 = Toplevel()
-    root3.title('Exit')
-    root3.geometry(str(int(root1.winfo_screenwidth() / 3) - 100) + 'x' + str(int(root1.winfo_screenheight() / 3) - 100) + '+' + str(int(root1.winfo_screenwidth() / 3)) + '+' + str(int(root1.winfo_screenheight() / 3)))
-    Label(root3, text='Are you sure').place(relx=0.3, rely=0.3)
-    Label(root3, text='you want to exit').place(relx=0.3, rely=0.4)
-    Button(root3, text='yes', command=yes1).place(relx=0.2, rely=0.7)
-    Button(root3, text='no', command=no1).place(relx=0.8, rely=0.7)
-    root3.bind('<Escape>', no2)
-    root3.bind('<Return>', yes2)
-    root3.mainloop()
-
-def ex2():
-    global root3
-    root3 = Toplevel()
-    root3.title('Exit')
-    root3.geometry(str(int(root1.winfo_screenwidth()/3) - 100) + 'x' + str(int(root1.winfo_screenheight()/3) - 100) + '+'+str(int(root1.winfo_screenwidth()/3))+'+'+str(int(root1.winfo_screenheight()/3)))
-    Label(root3,text='Are you sure').place(relx=0.3,rely=0.3)
-    Label(root3,text='you want to exit').place(relx=0.3,rely=0.4)
-    Button(root3,text='yes',command = yes1).place(relx=0.2,rely=0.7)
-    Button(root3, text='no',command = no1).place(relx=0.8,rely=0.7)
-    root3.bind('<Escape>', no2)
-    root3.bind('<Return>', yes2)
-    root3.mainloop()
+    Ex.create()
 
 def lis1():
     Mss.insert(INSERT, "#list of users")
 
 
 def time1():
-    Mss.insert(INSERT, '\n' + "Current Time = " + time.strftime("%H:%M:%S", time.localtime()))
+    Mss.insert(INSERT, '\n' + "Current Time = " + time.strftime("%H:%M:%S", time.localtime())+'\n')
 
 
 def time2(event):
-    Mss.insert(INSERT, '\n' + "Current Time = " + time.strftime("%H:%M:%S", time.localtime()))
+    Mss.insert(INSERT, '\n' + "Current Time = " + time.strftime("%H:%M:%S", time.localtime())+'\n')
+
+def ct2(event):
+    Dl.create()
 
 #меню
 filemenu = Menu(mainmenu, tearoff=0)
@@ -180,7 +193,9 @@ filemenu.add_command(label="Save text F3",command = savetext1)
 filemenu.add_command(label="Delete text F4",command = deletetext1)
 filemenu.add_command(label="List F5", command = lis1)
 filemenu.add_command(label="Time F6", command = time1)
-filemenu.add_command(label="Exit", command = ex2)
+filemenu.add_command(label='Clear text F7',command = Dl.create)
+filemenu.add_command(label="Exit Esc", command = Ex.create)
+
 
 
 mainmenu.add_cascade(label="Menu", menu=filemenu)
@@ -189,11 +204,13 @@ root1.config(menu=mainmenu)
 #отправка сообщения
 def send1():
     global mess
+    Mss.insert(INSERT,'\n' +Mess.get(1.0, END))
     mess = Mess.get(1.0,END)
     Mess.delete(1.0,END)
 
 def send2(event):
     global mess
+    Mss.insert(INSERT,'\n'+Mess.get(1.0,END))
     mess = Mess.get(1.0, END)
     Mess.delete(1.0, END)
 
@@ -206,6 +223,7 @@ root1.bind('<F3>',savetext2)
 root1.bind('<F4>',deletetext2)
 #root1.bind('F5',lis2)
 root1.bind('<F6>',time2)
+root1.bind('<F7>',ct2)
 
 Send = But(root1,'send',int(root1.winfo_screenwidth()/100),0,send1,1,1,'se')
 
@@ -214,5 +232,6 @@ Mess.place(relx=0.9,rely=0.995,anchor='se')
 img.place(x=-10, y=-10)
 root1.mainloop()
 text.close()
+
 
 
