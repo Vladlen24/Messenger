@@ -53,6 +53,7 @@ class Warn:
         self.root.mainloop()
 
     def yes(self):
+        global Mss
         Mss.configure(state=NORMAL)
         Mss.delete(1.0, END)
         Mss.configure(state=DISABLED)
