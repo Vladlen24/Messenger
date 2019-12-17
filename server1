@@ -1,13 +1,14 @@
 import socket
-
-s = socket.socket()
-host = socket.gethostname()                         
+host = socket.gethostname()
 port = 12345
-s.bind((host, port))
+backlog = 5
+size = 1024
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((host,port))
+s.listen(backlog)
 
-s.listen(5)
-while True:
-   c, addr = s.accept()    
-   print ('Получил соединение от', addr)
-   c.send(bytes('Hello','utf8'))
-   c.close()
+client, address = s.accept()
+while 1:
+    data = client.recv(size)
+    print(data)
+
