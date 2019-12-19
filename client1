@@ -84,7 +84,7 @@ def send1():
     Mss.insert(INSERT, '\n' + Mess.get(1.0, END))
     Mss.configure(state=DISABLED)
     #    if (IP != ''):
-    f = 'login: ' + log + ' text: ' + mess
+    f = log + ':' + mess
     s.send(bytes(f, 'utf8'))
     #    if (mess.length >= 2) and (mess[1] + mess[2] == 'IP'):
     #       IP = ''
@@ -100,7 +100,7 @@ def send2(event):
     Mss.insert(INSERT, '\n' + Mess.get(1.0, END))
     Mss.configure(state=DISABLED)
     #    if (IP != ''):
-    f = 'login: ' + log + ' text: ' + mess
+    f = log + ':' + mess
     s.send(bytes(f, 'utf8'))
     #    if (mess.length >= 2) and (mess[1] + mess[2] == 'IP'):
     #       IP = ''
