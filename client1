@@ -10,10 +10,10 @@ host = socket.gethostname()
 #host = "vladlen-Nitro-AN515-52"
 port = 12345
 
-IP = ''
+#IP = ''
 mess = ""
-log = ""
-pas = ""
+log = "Alice"
+#pas = ""
 login = ''
 
 def signout1():
@@ -75,47 +75,51 @@ def ct2(event):
     Dl.create()
 
 def send1():
-    global mess, login, IP
-    
+    global mess, log#, IP
+
     mess = Mess.get(1.0, END)
     Mess.delete(1.0, END)
-    if (login != ''):
-        Mss.configure(state=NORMAL)
-        Mss.insert(INSERT, '\n' + Mess.get(1.0, END))
-        Mss.configure(state=DISABLED)
-        if (IP != ''):
-                f = 'login: ' + login + ' IP: ' + IP + ' text: ' + mess
-                s.send(bytes(f, 'utf8'))
-        if (mess.length >= 2) and (mess[1] + mess[2] == 'IP'):
-            IP = ''
-            for i in range (mess.length - 2):
-                IP += mess[i + 2]
+    #if (login != ''):
+    Mss.configure(state=NORMAL)
+    Mss.insert(INSERT, '\n' + Mess.get(1.0, END))
+    Mss.configure(state=DISABLED)
+    #    if (IP != ''):
+    f = 'login: ' + log + ' text: ' + mess
+    s.send(bytes(f, 'utf8'))
+    #    if (mess.length >= 2) and (mess[1] + mess[2] == 'IP'):
+    #       IP = ''
+    #      for i in range(mess.length - 2):
+    #         IP += mess[i + 2]
+def send2(event):
+    global mess, log#, IP
+
+    mess = Mess.get(1.0, END)
+    Mess.delete(1.0, END)
+    #if (login != ''):
+    Mss.configure(state=NORMAL)
+    Mss.insert(INSERT, '\n' + Mess.get(1.0, END))
+    Mss.configure(state=DISABLED)
+    #    if (IP != ''):
+    f = 'login: ' + log + ' text: ' + mess
+    s.send(bytes(f, 'utf8'))
+    #    if (mess.length >= 2) and (mess[1] + mess[2] == 'IP'):
+    #       IP = ''
+    #      for i in range(mess.length - 2):
+    #         IP += mess[i + 2]
+
 
 
 def ask():
     print (s.recv(1024))
     root1.after(5,ask)
-def send2(event):
-    global mess, login, IP
-    
-    mess = Mess.get(1.0, END)
-    Mess.delete(1.0, END)
-    if (login != ''):	
-        Mss.configure(state=NORMAL)
-        Mss.insert(INSERT, '\n' + Mess.get(1.0, END))
-        Mss.configure(state=DISABLED)
-        if (IP != ''):
-                f = 'login: ' + login + ' IP: ' + IP + ' text: ' + mess
-                s.send(bytes(f, 'utf8'))
-        if (mess.length >= 2) and (mess[1] + mess[2] == 'IP'):
-            IP = ''
-            for i in range (mess.length - 2):
-                IP += mess[i + 2]
+
 
 def enter1():
+    print('kek')
     global log, pas, login, password
     log = login.get(1.0, END)
     pas = password.get(1.0, END)
+    s.send(bytes(log+pas+'137', 'utf8'))
     password.delete(1.0, END)
     login.delete(1.0, END)
 
@@ -124,6 +128,7 @@ def enter2(event):
     global log, pas, login, password
     log = login.get(1.0, END)
     pas = password.get(1.0, END)
+    s.send(bytes(log+pas+'137', 'utf8'))
     password.delete(1.0, END)
     login.delete(1.0, END)
 
@@ -144,12 +149,6 @@ def signin1():
     enter = But(root2, "Enter", int(root2.winfo_screenwidth() / 100), 0, enter1, 0.35, 0.65, 'nw')
     root2.bind('<Return>', enter2)
     root2.mainloop()
-    f = 'signin login: ' + login + ' password: ' + password
-    s.send(bytes(f, 'utf8'))
-    if (s.recv(1024) == False):
-        login = ''
-        password = ''
-        print('error')
 
 
 def signin2(event):
@@ -168,12 +167,6 @@ def signin2(event):
     enter = But(root2, "Enter", int(root2.winfo_screenwidth() / 100), 0, enter1, 0.35, 0.65, 'nw')
     root2.bind('<Return>', enter2)
     root2.mainloop()
-    f = 'signin login: ' + login + ' password: ' + password
-    s.send(bytes(f, 'utf8'))
-    if (s.recv(1024) == False):
-        login = ''
-        password = ''
-        print('error')
 
 
 filemenu = Menu(mainmenu, tearoff=0)
