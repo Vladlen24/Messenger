@@ -1,10 +1,213 @@
 import socket
-
+from interface import *
+from tkinter import *
+text = open('text.txt', 'r')
+Mess.insert(1.0, text.read())
+text.close()
+text = open('text.txt', 'a')
 s = socket.socket()
-host = socket.gethostname()                         
+host = socket.gethostname()
+#host = "vladlen-Nitro-AN515-52"
 port = 12345
+
+IP = ''
+mess = ""
+log = ""
+pas = ""
+login = ''
+
+def signout1():
+    global login, password
+    f = 'signout login: ' + login + ' password: ' + password
+    s.send(bytes(f, 'utf8'))
+    login = ''
+    password = ''
+    IP = ''
+
+
+def savetext1():
+    global text
+    text.write(Mess.get(1.0, END) + '\n')
+
+
+def savetext2(event):
+    global text
+    text.write(Mess.get(1.0, END) + '\n')
+
+
+def deletetext1():
+    global text
+    text.close()
+    Mess.delete(1.0, END)
+    text = open('text.txt', 'w')
+
+
+def deletetext2(event):
+    global text
+    text.close()
+    Mess.delete(1.0, END)
+    text = open('text.txt', 'w')
+
+
+def ex1(event):
+    Ex.create()
+
+
+def lis1():
+    Mss.configure(state=NORMAL)
+    Mss.insert(INSERT, "#list of users")
+    Mss.configure(state=DISABLED)
+
+
+def time1():
+    Mss.configure(state=NORMAL)
+    Mss.insert(INSERT, '\n' + "Current Time = " + time.strftime("%H:%M:%S", time.localtime()) + '\n')
+    Mss.configure(state=DISABLED)
+
+
+def time2(event):
+    Mss.configure(state=NORMAL)
+    Mss.insert(INSERT, '\n' + "Current Time = " + time.strftime("%H:%M:%S", time.localtime()) + '\n')
+    Mss.configure(state=DISABLED)
+
+
+def ct2(event):
+    Dl.create()
+
+def send1():
+    global mess, login, IP
+    
+    mess = Mess.get(1.0, END)
+    Mess.delete(1.0, END)
+    if (login != ''):
+        Mss.configure(state=NORMAL)
+        Mss.insert(INSERT, '\n' + Mess.get(1.0, END))
+        Mss.configure(state=DISABLED)
+        if (IP != ''):
+                f = 'login: ' + login + ' IP: ' + IP + ' text: ' + mess
+                s.send(bytes(f, 'utf8'))
+        if (mess.length >= 2) and (mess[1] + mess[2] == 'IP'):
+            IP = ''
+            for i in range (mess.length - 2):
+                IP += mess[i + 2]
+
+
+def ask():
+    print (s.recv(1024))
+    root1.after(5,ask)
+def send2(event):
+    global mess, login, IP
+    
+    mess = Mess.get(1.0, END)
+    Mess.delete(1.0, END)
+    if (login != ''):	
+        Mss.configure(state=NORMAL)
+        Mss.insert(INSERT, '\n' + Mess.get(1.0, END))
+        Mss.configure(state=DISABLED)
+        if (IP != ''):
+                f = 'login: ' + login + ' IP: ' + IP + ' text: ' + mess
+                s.send(bytes(f, 'utf8'))
+        if (mess.length >= 2) and (mess[1] + mess[2] == 'IP'):
+            IP = ''
+            for i in range (mess.length - 2):
+                IP += mess[i + 2]
+
+def enter1():
+    global log, pas, login, password
+    log = login.get(1.0, END)
+    pas = password.get(1.0, END)
+    password.delete(1.0, END)
+    login.delete(1.0, END)
+
+
+def enter2(event):
+    global log, pas, login, password
+    log = login.get(1.0, END)
+    pas = password.get(1.0, END)
+    password.delete(1.0, END)
+    login.delete(1.0, END)
+
+
+def signin1():
+    global login, password, log, pas
+    root2 = Toplevel()
+    root2.title("Sign in")
+    root2.geometry(str(int(root1.winfo_screenwidth() / 3) - 100) + 'x' + str(
+        int(root1.winfo_screenheight() / 3) - 100) + '+' + str(int(root1.winfo_screenwidth() / 3)) + '+' + str(
+        int(root1.winfo_screenheight() / 3)))
+    login = Text(root2, width=30, height=1, bg="white", fg='black', wrap=WORD)
+    login.place(relx=0.2, rely=0.15)
+    Label(root2, text='login').place(relx=0.2, rely=0)
+    password = Text(root2, width=30, height=1, bg="white", fg='black', wrap=WORD)
+    Label(root2, text='password').place(relx=0.2, rely=0.25)
+    password.place(relx=0.2, rely=0.4)
+    enter = But(root2, "Enter", int(root2.winfo_screenwidth() / 100), 0, enter1, 0.35, 0.65, 'nw')
+    root2.bind('<Return>', enter2)
+    root2.mainloop()
+    f = 'signin login: ' + login + ' password: ' + password
+    s.send(bytes(f, 'utf8'))
+    if (s.recv(1024) == False):
+        login = ''
+        password = ''
+        print('error')
+
+
+def signin2(event):
+    global login, password, log, pas
+    root2 = Toplevel()
+    root2.title("Sign in")
+    root2.geometry(str(int(root1.winfo_screenwidth() / 3) - 100) + 'x' + str(
+        int(root1.winfo_screenheight() / 3) - 100) + '+' + str(int(root1.winfo_screenwidth() / 3)) + '+' + str(
+        int(root1.winfo_screenheight() / 3)))
+    login = Text(root2, width=30, height=1, bg="white", fg='black', wrap=WORD)
+    login.place(relx=0.2, rely=0.15)
+    Label(root2, text='login').place(relx=0.2, rely=0)
+    password = Text(root2, width=30, height=1, bg="white", fg='black', wrap=WORD)
+    Label(root2, text='password').place(relx=0.2, rely=0.25)
+    password.place(relx=0.2, rely=0.4)
+    enter = But(root2, "Enter", int(root2.winfo_screenwidth() / 100), 0, enter1, 0.35, 0.65, 'nw')
+    root2.bind('<Return>', enter2)
+    root2.mainloop()
+    f = 'signin login: ' + login + ' password: ' + password
+    s.send(bytes(f, 'utf8'))
+    if (s.recv(1024) == False):
+        login = ''
+        password = ''
+        print('error')
+
+
+filemenu = Menu(mainmenu, tearoff=0)
+filemenu.add_command(label="Sign in F1", command=signin1)
+filemenu.add_command(label="Sign out F2" ''',command = signout''')
+filemenu.add_command(label="Save text F3", command=savetext1)
+filemenu.add_command(label="Delete text F4", command=deletetext1)
+filemenu.add_command(label="List F5", command=lis1)
+filemenu.add_command(label="Time F6", command=time1)
+filemenu.add_command(label='Clear text F7', command=Dl.create)
+filemenu.add_command(label="Exit Esc", command=Ex.create)
+
+mainmenu.add_cascade(label="Menu", menu=filemenu)
+
+root1.bind('<Return>', send2)
+root1.bind('<Escape>', ex1)
+root1.bind('<F1>', signin2)
+# root2.bind('<F2>',signout2)
+root1.bind('<F3>', savetext2)
+root1.bind('<F4>', deletetext2)
+# root1.bind('F5',lis2)
+root1.bind('<F6>', time2)
+root1.bind('<F7>', ct2)
+
+Send = But(root1, 'send', int(root1.winfo_screenwidth() / 100), 0, send1, 1, 1, 'se')
+
+root1.config(menu=mainmenu)
+
+
+
 
 s.connect((host, port))
 s.send(bytes('So Hi','utf8'))
 print (s.recv(1024))
 s.close
+text.close()
+root1.mainloop()
