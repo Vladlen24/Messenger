@@ -12,7 +12,6 @@ def opening():
     global reg_login, reg_password, aut_login, aut_password  # login and password from the first registration window
     if reg_login != '':
         s.send(bytes(reg_login + ':' + 'reg' + ':' + reg_password, 'utf8'))
-        print(reg_login + ':' + 'reg' + ':' + reg_password)
         reg_login = ''
         reg_password = ''
     if aut_login != '':
@@ -28,9 +27,7 @@ def opening():
             clients[N - 1].log = c.split(':')[0]
             ask(clients[N - 1])
     window.after(5, opening)
-def pr():
-    print(reg_login + ':' + 'reg' + ':' + reg_password)
-    window.after(5, pr)
+
 def ask(obj):
     с = str(s.recv(1024))
     if c.split(':')[1] != 'reg' and c.split(':')[1] != 'aut':
@@ -50,6 +47,4 @@ def ask(obj):
 s.connect((host, port))
 s.close
 opening()
-pr()
-text.close()
-root1.mainloop()
+window.mainloop()
